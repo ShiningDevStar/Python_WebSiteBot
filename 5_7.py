@@ -15,7 +15,6 @@ import os
 browser = webdriver.Chrome(ChromeDriverManager().install())
 
 browser.get('https://algeria.blsspainvisa.com/')
-
 browser.find_element_by_xpath("//div[@class='popupCloseIcon']").click();
 print("AAA");
 sleep(1);

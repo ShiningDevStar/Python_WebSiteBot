@@ -4,8 +4,8 @@
 4. Multiple Account(Threading)
 5,6. GUI
 
-
-AAA
+devtest0312@outlook.com
+U0IQ0AiF
 Bot for bls spain appointments in Algeria
 
 khaldoun
@@ -30,7 +30,7 @@ Appointments are not available all the time, so the bot automatically check the 
 The bot book appointments for serveral people at the same time.
 
 3. The bot books 20 appointments in the opening
-
+setif2017s
 Payment: ( You can after dliver)
 Step 1 : 700USD
 Step 2 : 300USD
@@ -105,3 +105,5 @@ Yes it books automatically
 10:05 PM
 for many persons at the same time
 10
+
+
