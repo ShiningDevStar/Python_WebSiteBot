@@ -55,7 +55,7 @@ browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/
 
 emailaddr = input("emailaddr")
 # name /html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[1]/div[2]/input[1]
-browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[1]/div[2]/input[1]").send_keys("AAA")
+browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[1]/div[2]/input[1]").send_keys("John")
 # email /html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[2]/div[2]/input[1]
 browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[2]/div[2]/input[1]").send_keys(emailaddr)
 # phone /html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[3]/div[2]/div[2]/input[1]

@@ -1,24 +1,25 @@
-import pytesseract
-import sys
-import argparse
-try:
-    import Image
-except ImportError:
-    from PIL import Image
-from subprocess import check_output
+import re
+import requests
+from os import environ
+import threading
+import time
+from anycaptcha import AnycaptchaClient, HCaptchaTaskProxyless, RecaptchaV2TaskProxyless, RecaptchaV3TaskProxyless, \
+    ImageToTextTask ,RecaptchaV2Task ,HCaptchaTask , FunCaptchaProxylessTask,ZaloTask
+import random
 
 
-def resolve(path):
-    print("Resampling the Image")
-    check_output(['convert', path, '-resample', '600', path])
-    return pytesseract.image_to_string(Image.open(path))
+def demo_imagetotext():
+    api_key = '89fd718af6f547dcb416f6e06a7ad532'
+    captcha_fp = open('captcha.jpg', 'rb')
+    print(type(captcha_fp))
+    client = AnycaptchaClient(api_key)
+    task = ImageToTextTask(captcha_fp)
+    job = client.createTask(task,typecaptcha="text")
+    job.join()
+    result = job.get_solution_response()
+    if result.find("ERROR") != -1:
+        print("error ", result)
+    else:
+        print("success ", result)
 
-
-if __name__=="__main__":
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument('path', help = 'Captcha file path')
-    args = argparser.parse_args()
-    path = args.path
-    print('Resolving Captcha')
-    captcha_text = resolve(path)
-    print('Extracted Text', captcha_text)
+demo_imagetotext()
