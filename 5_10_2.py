@@ -52,10 +52,10 @@ browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/
 browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[2]/input[2]").click();
 sleep(2);
 browser.implicitly_wait(2);
-Password = 'ZKEn@OV5'
-get_otp_from_email(MailAddr,Password)
+get_otp_from_email(MailAddr,'slwgidaik1')
 OTPcode=input("Please Input OTP code");
 
+Password = 'ZKEn@OV5'
 #browser.find_element(By.XPATH,"").click();
 browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[1]/div[2]/input[1]").send_keys(OTPcode)
 browser.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[2]/div[2]/input[1]").send_keys(Password)

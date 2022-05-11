@@ -1,4 +1,5 @@
 1. Load Gmail and Sign in.
+2. Create Account in outlook and .com
 2. Look Book Appointment is avaliable
 3. ByPass Captcha
 4. Multiple Account(Threading)
