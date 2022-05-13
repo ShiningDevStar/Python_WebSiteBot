@@ -5,6 +5,9 @@ from selenium.webdriver.common.keys import Keys
 import selenium.webdriver.support.expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.service import Service as ChromeService # Similar thing for firefox also!
+from subprocess import CREATE_NO_WINDOW # This flag will only be available in window
 import time
 from time import sleep
 import os
@@ -19,115 +22,30 @@ import random
 import sys
 
 
-class AutoRegisterAccount():
-    def __init__(self,emailaddr,emailpassword):
-        self.driver = None
-        self.chrome_options = Options()
-        self.exe_path = "drivers/chromedriver"
-        self.username = emailaddr
-        self.password = emailpassword
-        pass
-    def demo_imagetotext(self,imgpath):
-        api_key = '89fd718af6f547dcb416f6e06a7ad532'
-        captcha_fp = open(imgpath, 'rb')
-        print(type(captcha_fp))
-        client = AnycaptchaClient(api_key)
-        task = ImageToTextTask(captcha_fp)
-        job = client.createTask(task,typecaptcha="text")
-        job.join()
-        result = job.get_solution_response()
-        if result.find("ERROR") != -1:
-            print("error ")
-        else:
-            print("success ")
-        return result
-    def is_visible(self, locator, timeout=30):
-        try:
-            ui.WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((By.ID, locator)))
-            return True
-        except TimeoutException:
-            return False
-    def page_has_loaded(self):
-        page_state = self.driver.execute_script('return document.readyState;')
-        return True
-    def AccountRegist(self,name,phonenumber):
-        self.driver = webdriver.Chrome(chrome_options=self.chrome_options, executable_path=self.exe_path)
-        
-        self.driver.get('https://algeria.blsspainvisa.com/')
-        if self.page_has_loaded() is True:
-            pass
-
-        self.driver.find_element(By.XPATH,"//div[@class='popupCloseIcon']").click()
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/header[1]/div[2]/nav[1]/a[3]").click();
-        self.driver.implicitly_wait(2);
-        self.driver.find_element(By.XPATH,"//a[normalize-space()='Pour Le Centre Demande De Visa']").click();
-        self.driver.implicitly_wait(2);
-        self.driver.find_element_by_link_text("Réservez votre rendez-vous").click();
-        print(self.driver.current_url)
-        self.driver.implicitly_wait(2);
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[2]/div[1]/a[1]").click()
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[1]/div[2]/input[1]").send_keys(name)
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[2]/div[2]/input[1]").send_keys(self.username)
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[3]/div[2]/div[2]/input[1]").send_keys(phonenumber)
-        location = self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[4]/div[2]/select[1]")
-        location.click()
-        location.send_keys(Keys.DOWN)
-        location.send_keys(Keys.ENTER)
-        img_captcha = self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[5]/div[1]/div[1]/img[1]");
-        data_captcha = img_captcha.screenshot_as_png
-        print(data_captcha)
-        img_url = img_captcha.get_attribute("src")
-        with open(f"temp.png","wb") as file:
-            file.write(data_captcha)
-        code = self.demo_imagetotext("temp.png")
-        print(code)
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[6]/div[2]/input[1]").send_keys(code)
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/form[1]/div[7]/input[1]").click()
-        print("Complete")
-    def AccountVerify(self):
-        try:
-            mail = outlook.Outlook()
-            mail.login(self.username,self.password)
-            mail.inbox()
-            mail.read()
-            mailText = mail.mailbody()
-            print(mailText)
-            mail.logout()
-            self.userInfo(mailText)
-            self.verify(mailText)
-        except Exception as e:
-            print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
-    def userInfo(self,mailbody):
-        try:
-            index = mailbody.find("Username:")
-            indexend = mailbody[index:].find('</')
-            print(mailbody[index+18:index+indexend])
-            index = mailbody.find("Password:")
-            indexend = mailbody[index:].find('</')
-            print(mailbody[index+18:index+indexend])
-        except Exception as e:
-            print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
-    def verify(self,mailbody):
-        index = mailbody.find("href=")
-        indexend = mailbody[index:].find('>')
-        verifyurl = mailbody[index+6:index+indexend-1]
-        verfiy_driver = webdriver.Chrome(chrome_options=self.chrome_options, executable_path=self.exe_path)
-        print(verifyurl)
-        verfiy_driver.get(verifyurl)
-        verify_driver.quit()
-        sleep(5)
     
 class AutoLogIn():
-    def __init__(self,emailaddr,emailpassword):
+    def __init__(self,emailaddr,emailpassword,visapassword):
         self.driver = None
         self.chrome_options = Options()
+        #self.chrome_options.add_argument('--headless')
         self.exe_path = "drivers/chromedriver"
         self.username = emailaddr
         self.password = emailpassword
+        self.visapass = visapassword
+        self.chrome_service = ChromeService('drivers\chromedriver')
+        self.chrome_service.creationflags = CREATE_NO_WINDOW
+
         pass
     def LogIn(self):
-        self.driver = webdriver.Chrome(chrome_options=self.chrome_options, executable_path=self.exe_path)
+        self.driver = webdriver.Chrome(chrome_options=self.chrome_options, executable_path=self.exe_path , service=self.chrome_service)
+        start = time.time();
         self.driver.get('https://algeria.blsspainvisa.com/')
+        while "504" in self.driver.title :
+            self.driver.get('https://algeria.blsspainvisa.com/')
+        finish = time.time();
+        totalTime = finish - start; 
+        print(totalTime); 
+        self.driver.implicitly_wait(30)
         self.driver.find_element(By.XPATH,"//div[@class='popupCloseIcon']").click()
         #self.driver.find_element_by_xpat("//div[@class='popupCloseIcon']").click();
         print("AAA");
@@ -150,7 +68,7 @@ class AutoLogIn():
 
         #self.driver.find_element(By.XPATH,"").click();
         self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[1]/div[2]/input[1]").send_keys(OTPcode)
-        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[2]/div[2]/input[1]").send_keys(self.password)
+        self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[2]/div[2]/input[1]").send_keys(self.visapass)
         self.driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/div[3]/input[2]").click();
 
         self.check_isOpen()
@@ -161,9 +79,20 @@ class AutoLogIn():
             mail.read()
             mailText = mail.mailbody()
             mail.logout()
-            return self.find_otp(mailText)
+            OTP = self.find_otp(mailText)
+            if OTP != -1:
+                return OTP
+            mail.login(self.username,self.password)
+            mail.junk()
+            mail.read()
+            mailText = mail.mailbody()
+            mail.logout()
+            OTP = self.find_otp(mailText)
+            return OTP
     def find_otp(self,mailbody):
             index = mailbody.find("OTP - ")
+            if index == -1:
+                 return index
             print(mailbody[index:])
             indexend = mailbody[index:].find('<')
             print(indexend)
@@ -182,12 +111,26 @@ class AutoLogIn():
             message = 'message',
             app_icon = None,
             timeout = 10,
-        )        
+        )
+def logthread(username , password, visapass):
+    logBot = AutoLogIn(username, password, visapass)
+    logBot.LogIn()
+    
 if __name__ == "__main__":
     threads = []
     #registerBot = AutoRegisterAccount('devtest0317@outlook.com', 'slwgidaik1')
     #registerBot.AccountRegist("John","542136874")
     #registerBot.AccountVerify()
-    logBot = AutoLogIn('devtest0317@outlook.com','slwgidaik1')
-    print("Outlook Creator ")
-    logBot.LogIn()
+    u = ["devtest0312@outlook.com", "devtest0315@outlook.com","devtest0316@outlook.com", "devtest0318@outlook.com" ,"devtest0320@outlook.com"]
+    p = ["slwgidaik1","slwgidaik1","slwgidaik1","slwgidaik1","slwgidaik1"]
+    v = ["U0IQ0AiF","ZKEn@OV5","xf21?lb6","Ni8i9yba","xbrXLh3t"]
+    for k in range(5):
+        t = threading.Thread(target=logthread, args=(u[k], p[k], v[k],))
+        threads.append(t)
+        t.start()
+    #logBot = AutoLogIn('devtest0312@outlook.com','slwgidaik1','U0IQ0AiF')
+    #logBot = AutoLogIn('devtest0315@outlook.com','slwgidaik1','ZKEn@OV5')
+    #logBot = AutoLogIn('devtest0316@outlook.com','slwgidaik1','xf21?lb6')
+    #logBot = AutoLogIn('devtest0318@outlook.com','slwgidaik1','Ni8i9yba')
+    # AutoLogIn('devtest0320@outlook.com','slwgidaik1','xbrXLh3t') 
+    #logBot.LogIn()
